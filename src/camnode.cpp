@@ -522,9 +522,9 @@ static void NewBuffer_callback (ArvStream *pStream, ApplicationData *pApplicatio
         {
 			sensor_msgs::Image msg;
 			
-        	pApplicationdata->nBuffers++;
-            size_t pSize = 0;
-            const void *pData = arv_buffer_get_data(pBuffer, &pSize);
+			pApplicationdata->nBuffers++;
+			size_t pSize = 0;
+			const void *pData = arv_buffer_get_data(pBuffer, &pSize);
 			std::vector<uint8_t> this_data(pSize);
 			memcpy(&this_data[0], pData, pSize);
 
@@ -532,7 +532,7 @@ static void NewBuffer_callback (ArvStream *pStream, ApplicationData *pApplicatio
 			// Camera/ROS Timestamp coordination.
 			cn				= (uint64_t)arv_buffer_get_timestamp(pBuffer);				// Camera now
 			rn	 			= ros::Time::now().toNSec();					// ROS now
-            global.frame_id++;
+			global.frame_id++;
 			
 			if (iFrame < 10)
 			{
