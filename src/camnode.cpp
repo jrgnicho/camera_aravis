@@ -61,6 +61,17 @@ typedef camera_aravis::CameraAravisConfig Config;
 
 static gboolean SoftwareTrigger_callback (void *);
 
+std::string TranslateBaslerEncoding(const std::string& encd)
+{
+	static std::map<std::string,std::string> BASLER_ENCODING_CONVERSIONS = {{"yuv422packed","yuv422"}, {"yuv422_yuyv_packed","yuv422"}};
+	if(BASLER_ENCODING_CONVERSIONS.count(encd))
+	{
+		return BASLER_ENCODING_CONVERSIONS[encd];
+	}
+
+	return encd;
+}
+
 typedef struct
 {
 	const char *szName;
@@ -568,7 +579,7 @@ static void NewBuffer_callback (ArvStream *pStream, ApplicationData *pApplicatio
 			msg.header.frame_id = global.config.frame_id;
 			msg.width = global.widthRoi;
 			msg.height = global.heightRoi;
-			msg.encoding = global.pszPixelformat;
+			msg.encoding = TranslateBaslerEncoding(global.pszPixelformat);
 			msg.step = msg.width * global.nBytesPixel;
 			msg.data = this_data;
 
